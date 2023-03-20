@@ -1,0 +1,19 @@
+{
+  "name": "dopravn-pruzkum-ulic",
+  "version": "0.1.0",
+  "description": "No description provided",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "diplomka"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "mariadb": "^3.0.2"
+  }
+}
