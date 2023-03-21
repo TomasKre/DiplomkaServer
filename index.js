@@ -12,8 +12,12 @@ const mapController = require('./controllers/Map');
 
 app.use(express.json());
 
+app.set('views', './views');
+app.set('view engine', 'pug');
+
 app.get('/', function(req, res) {
-  res.send('Hello World!');
+  res.redirect('/map');
+  //res.redirect('/user'); po přihlašování
 });
 
 // User routes

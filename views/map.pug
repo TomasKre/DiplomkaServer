@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    title My Map
+    script(src=`https://maps.googleapis.com/maps/api/js?key=AIzaSyBieHJKHFJ4jfh5qE4YvXzjJ1Ve9GNC1j4&libraries=visualization`)
+    // Udělat request na server a získat API key - schová se před uživatelem
+  body
+    #map
+    script.
+      let height = window.innerHeight;
+      let width = window.innerWidth;
+      let mapDiv = document.getElementById('map');
+      console.log(height);
+      console.log(width);
+      console.log(mapDiv);
+      mapDiv.style.height = height + "px";
+      mapDiv.style.width = width + "px";
+
+      console.log(google);
+      console.log(google.maps);
+      const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: { lat: 37.7749, lng: -122.4194 },
+        mapTypeId: 'terrain'
+      });
+
+      const heatmapData = !{JSON.stringify(heatmapData)};
+
+      const heatmap = new google.maps.visualization.HeatmapLayer({
+        data: heatmapData.map(dataPoint => ({
+          location: new google.maps.LatLng(dataPoint.location.lat, dataPoint.location.lng),
+          weight: dataPoint.weight
+        })),
+        map: map
+      });
+      heatmap.setMap(map);
