@@ -20,16 +20,16 @@ html
       console.log(google.maps);
       const map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
-        center: { lat: 37.7749, lng: -122.4194 },
+        center: { lat: 50.7729, lng: 15.0729 },
         mapTypeId: 'terrain'
       });
 
       const heatmapData = !{JSON.stringify(heatmapData)};
+      console.log(heatmapData);
 
       const heatmap = new google.maps.visualization.HeatmapLayer({
         data: heatmapData.map(dataPoint => ({
-          location: new google.maps.LatLng(dataPoint.location.lat, dataPoint.location.lng),
-          weight: dataPoint.weight
+          location: new google.maps.LatLng(dataPoint.lat, dataPoint.lon),
         })),
         map: map
       });
