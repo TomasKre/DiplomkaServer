@@ -1,5 +1,6 @@
 const express = require('express');
 //const cors = require('cors');
+const fs = require('fs');
 const app = express();
 
 var serverPort = (process.env.PORT || 5000);
@@ -32,6 +33,19 @@ app.post('/upload/fulldata', uploadController.postFullData);
 
 // Map routes
 app.get('/map', mapController.getMap);
+
+// Resources routes
+app.get('/resources/scripts/google_map_script.js', (req, res) => {
+  fs.readFile(__dirname + '/resources/scripts/google_maps_script.js', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal server error');
+    } else {
+      res.type('text/javascript').send(data);
+    }
+  });
+});
+
 
 app.listen(serverPort, function() {
   console.log('Express server listening on port ' + serverPort);
