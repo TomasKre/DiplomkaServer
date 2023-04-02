@@ -1,12 +1,12 @@
 'use strict';
-/*const mariadb = require('mariadb');
+const mariadb = require('mariadb');
 const pool = mariadb.createPool({
      host: 'localhost',
      database: 'ulice',
      user:'ulice',
      password: 've9ZTyC2I63p3b5M',
      connectionLimit: 5
-});*/
+});
 
 
 /**
