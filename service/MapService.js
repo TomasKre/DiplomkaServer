@@ -17,7 +17,8 @@ exports.getMap = function () {
   return new Promise(function (resolve, reject) {
     pool.getConnection()
     .then(conn => {
-      conn.query('SELECT lat, lon FROM DataPoints')
+      conn.query('SELECT lat, lon, noise FROM DataPoints UNION' +
+      'SELECT lat, lon, noise FROM DataPointsShort')
         .then(rows => {
           console.log(rows); // rows contains rows returned by server
           conn.release(); // release the connection back to the pool

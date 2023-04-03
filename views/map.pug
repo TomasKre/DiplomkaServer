@@ -2,34 +2,86 @@ doctype html
 html
   head
     title My Map
-    script(src='../resources/scripts/google_maps_script.js')
   body
     #map
+    script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
     script.
-      let height = window.innerHeight;
-      let width = window.innerWidth;
-      let mapDiv = document.getElementById('map');
-      console.log(height);
-      console.log(width);
-      console.log(mapDiv);
-      mapDiv.style.height = height + "px";
-      mapDiv.style.width = width + "px";
+      function initMap() {
+        let height = window.innerHeight;
+        let width = window.innerWidth;
+        let mapDiv = document.getElementById('map');
+        console.log(height);
+        console.log(width);
+        console.log(mapDiv);
+        mapDiv.style.height = height + "px";
+        mapDiv.style.width = width + "px";
 
-      console.log(google);
-      console.log(google.maps);
-      const map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
-        center: { lat: 50.7729, lng: 15.0729 },
-        mapTypeId: 'terrain'
-      });
+        console.log(google);
+        console.log(google.maps);
+        const map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: { lat: 50.7729, lng: 15.0729 },
+          mapTypeId: 'terrain'
+        });
 
-      const heatmapData = !{JSON.stringify(heatmapData)};
-      console.log(heatmapData);
+        var dataLow = [];
+        var dataMedium = [];
+        var dataHigh = [];
 
-      const heatmap = new google.maps.visualization.HeatmapLayer({
-        data: heatmapData.map(dataPoint => ({
-          location: new google.maps.LatLng(dataPoint.lat, dataPoint.lon),
-        })),
-        map: map
-      });
-      heatmap.setMap(map);
+        const heatmapData = !{JSON.stringify(heatmapData)};
+        console.log(heatmapData);
+
+        heatmapData.forEach(dataPoint => {
+          if (dataPoint.noise < 50.0) {
+            dataLow.push(new google.maps.LatLng(dataPoint.lat, dataPoint.lon));
+          } else if (dataPoint.noise > 70.0) {
+            dataHigh.push(new google.maps.LatLng(dataPoint.lat, dataPoint.lon));
+          } else {
+            dataMedium.push(new google.maps.LatLng(dataPoint.lat, dataPoint.lon));
+          }
+        });
+
+        var heatmapLow = new google.maps.visualization.HeatmapLayer({
+          data: dataLow,
+          map: map,
+          radius: 16
+        });
+
+        var heatmapMedium = new google.maps.visualization.HeatmapLayer({
+          data: dataMedium,
+          map: map,
+          radius: 20
+        });
+
+        var heatmapHigh = new google.maps.visualization.HeatmapLayer({
+          data: dataHigh,
+          map: map,
+          radius: 24
+        });
+
+        var yellow = [
+          'rgba(255, 255, 0, 0.8)',
+          'rgba(255, 255, 0, 0.9)',
+          'rgb(255, 230, 0), 1.0'
+        ];
+
+        var red = [
+          'rgba(255, 0, 0, 0.8)',
+          'rgba(255, 0, 0, 0.9)',
+          'rgba(230, 0, 0, 1.0)'
+        ];
+
+        var green = [
+          'rgba(0, 255, 0, 0.8)',
+          'rgba(0, 255, 0, 0.9)',
+          'rgba(0, 230, 0, 1.0)'
+        ];
+
+        heatmapLow.set('gradient', heatmapLow.get('gradient') ? null : green);
+        heatmapMedium.set('gradient', heatmapMedium.get('gradient') ? null : yellow);
+        heatmapHigh.set('gradient', heatmapHigh.get('gradient') ? null : red);
+
+        heatmapLow.setMap(map);
+        heatmapMedium.setMap(map);
+        heatmapHigh.setMap(map);
+      }
