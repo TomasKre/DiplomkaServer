@@ -4,7 +4,6 @@ html
     title My Map
   body
     #map
-    script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
     script.
       function initMap() {
         let height = window.innerHeight;
@@ -44,44 +43,48 @@ html
         var heatmapLow = new google.maps.visualization.HeatmapLayer({
           data: dataLow,
           map: map,
-          radius: 16
+          radius: 12
         });
 
         var heatmapMedium = new google.maps.visualization.HeatmapLayer({
           data: dataMedium,
           map: map,
-          radius: 20
+          radius: 14
         });
 
         var heatmapHigh = new google.maps.visualization.HeatmapLayer({
           data: dataHigh,
           map: map,
-          radius: 24
+          radius: 16
         });
 
         var yellow = [
+          'rgba(255, 255, 0, 0.0)',
           'rgba(255, 255, 0, 0.8)',
-          'rgba(255, 255, 0, 0.9)',
-          'rgb(255, 230, 0), 1.0'
+          'rgba(255, 242, 0, 0.9)',
+          'rgba(255, 230, 0, 1.0)',
         ];
 
         var red = [
+          'rgba(255, 0, 0, 0.0)',
           'rgba(255, 0, 0, 0.8)',
-          'rgba(255, 0, 0, 0.9)',
-          'rgba(230, 0, 0, 1.0)'
+          'rgba(242, 0, 0, 0.9)',
+          'rgba(230, 0, 0, 1.0)',
         ];
 
         var green = [
+          'rgba(0, 255, 0, 0.0)',
           'rgba(0, 255, 0, 0.8)',
-          'rgba(0, 255, 0, 0.9)',
-          'rgba(0, 230, 0, 1.0)'
+          'rgba(0, 242, 0, 0.9)',
+          'rgba(0, 230, 0, 1.0)',
         ];
 
-        heatmapLow.set('gradient', heatmapLow.get('gradient') ? null : green);
-        heatmapMedium.set('gradient', heatmapMedium.get('gradient') ? null : yellow);
-        heatmapHigh.set('gradient', heatmapHigh.get('gradient') ? null : red);
+        heatmapLow.set('gradient', green);
+        heatmapMedium.set('gradient', yellow);
+        heatmapHigh.set('gradient', red);
 
         heatmapLow.setMap(map);
         heatmapMedium.setMap(map);
         heatmapHigh.setMap(map);
       }
+    script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
