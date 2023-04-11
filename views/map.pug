@@ -19,6 +19,7 @@ html
         console.log(google.maps);
         const map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
+          scaleControl: true,
           center: { lat: 50.7729, lng: 15.0729 },
           mapTypeId: 'terrain'
         });
@@ -60,9 +61,9 @@ html
 
         var yellow = [
           'rgba(255, 255, 0, 0.0)',
-          'rgba(255, 255, 0, 0.8)',
-          'rgba(255, 242, 0, 0.9)',
-          'rgba(255, 230, 0, 1.0)',
+          'rgba(255, 255, 0, 1.0)',
+          'rgba(255, 247, 0, 1.0)',
+          'rgba(255, 235, 0, 1.0)',
         ];
 
         var red = [
