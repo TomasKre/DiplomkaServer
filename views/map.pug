@@ -6,7 +6,58 @@ html
       include ../resources/stylesheets/main.css
   body
     #map
+    .buttons
+      button#heatmap1 Nízké hladiny
+      button#heatmap2 Střední hladiny
+      button#heatmap3 Vysoké hladiny
+      input#opacity(type='range' value='60' step='10' name='opacity_input')
+      label(for='opacity_input') Průhlednost
+      button#gradient1 Základní
+      button#gradient2 Pokročilé
+      button#gradient3 Zakládní odlišení červená/zelená
     script.
+      let map, heatmapLow, heatmapMedium, heatmapHigh;
+      var yellow = [
+        'rgba(255, 255, 0, 0.0)',
+        'rgba(255, 255, 0, 1.0)',
+        'rgba(255, 247, 0, 1.0)',
+        'rgba(255, 235, 0, 1.0)',
+      ];
+      var red = [
+        'rgba(255, 0, 0, 0.0)',
+        'rgba(255, 0, 0, 0.8)',
+        'rgba(242, 0, 0, 0.9)',
+        'rgba(230, 0, 0, 1.0)',
+      ];
+      var green = [
+        'rgba(0, 255, 0, 0.0)',
+        'rgba(0, 255, 0, 0.8)',
+        'rgba(0, 242, 0, 0.9)',
+        'rgba(0, 230, 0, 1.0)',
+      ];
+      var blue = [
+        'rgba(0, 0, 255, 0.0)',
+        'rgba(0, 0, 255, 0.8)',
+        'rgba(0, 0, 242, 0.9)',
+        'rgba(0, 0, 230, 1.0)',
+      ];
+      var yellowToGreen = [
+        'rgba(0, 255, 0, 0.0)',
+        'rgba(32, 255, 0, 0.8)',
+        'rgba(128, 255, 0, 0.9)',
+        'rgba(230, 255, 0, 1.0)',
+        'rgba(255, 240, 0, 1.0)',
+      ];
+      var redToYellowToGreen = [
+        'rgba(0, 255, 0, 0.0)',
+        'rgba(128, 255, 0, 0.8)',
+        'rgba(255, 255, 0, 1.0)',
+        'rgba(255, 128, 0, 1.0)',
+        'rgba(255, 64, 0, 1.0)',
+        'rgba(255, 32, 0, 1.0)',
+        'rgba(255, 0, 0, 1.0)',
+      ];
+
       function initMap() {
         let height = window.innerHeight;
         let width = window.innerWidth;
@@ -19,7 +70,7 @@ html
 
         console.log(google);
         console.log(google.maps);
-        const map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
           scaleControl: true,
           center: { lat: 50.7729, lng: 15.0729 },
@@ -43,44 +94,23 @@ html
           }
         });
 
-        var heatmapLow = new google.maps.visualization.HeatmapLayer({
+        heatmapLow = new google.maps.visualization.HeatmapLayer({
           data: dataLow,
           map: map,
           radius: 12
         });
 
-        var heatmapMedium = new google.maps.visualization.HeatmapLayer({
+        heatmapMedium = new google.maps.visualization.HeatmapLayer({
           data: dataMedium,
           map: map,
           radius: 14
         });
 
-        var heatmapHigh = new google.maps.visualization.HeatmapLayer({
+        heatmapHigh = new google.maps.visualization.HeatmapLayer({
           data: dataHigh,
           map: map,
           radius: 16
         });
-
-        var yellow = [
-          'rgba(255, 255, 0, 0.0)',
-          'rgba(255, 255, 0, 1.0)',
-          'rgba(255, 247, 0, 1.0)',
-          'rgba(255, 235, 0, 1.0)',
-        ];
-
-        var red = [
-          'rgba(255, 0, 0, 0.0)',
-          'rgba(255, 0, 0, 0.8)',
-          'rgba(242, 0, 0, 0.9)',
-          'rgba(230, 0, 0, 1.0)',
-        ];
-
-        var green = [
-          'rgba(0, 255, 0, 0.0)',
-          'rgba(0, 255, 0, 0.8)',
-          'rgba(0, 242, 0, 0.9)',
-          'rgba(0, 230, 0, 1.0)',
-        ];
 
         heatmapLow.set('gradient', green);
         heatmapMedium.set('gradient', yellow);
@@ -89,5 +119,67 @@ html
         heatmapLow.setMap(map);
         heatmapMedium.setMap(map);
         heatmapHigh.setMap(map);
+
+        document
+          .getElementById("heatmap1")
+          .addEventListener("click", () => toggleHeatmap(1));
+        document
+          .getElementById("heatmap2")
+          .addEventListener("click", () => toggleHeatmap(2));
+        document
+          .getElementById("heatmap3")
+          .addEventListener("click", () => toggleHeatmap(3));
+        document
+          .getElementById("gradient1")
+          .addEventListener("click", () => changeGradient(1));
+        document
+          .getElementById("gradient2")
+          .addEventListener("click", () => changeGradient(2));
+        document
+          .getElementById("gradient3")
+          .addEventListener("click", () => changeGradient(3));
+        document
+          .getElementById("opacity")
+          .addEventListener("click", (event) => changeOpacity(event));
+      }
+      function toggleHeatmap(selection) {
+        console.log("Heatmap button: " + selection);
+        switch(selection) {
+          case 1:
+            heatmapLow.setMap(heatmapLow.getMap() ? null : map);
+            break;
+          case 2:
+            heatmapMedium.setMap(heatmapMedium.getMap() ? null : map);
+            break;
+          case 3:
+            heatmapHigh.setMap(heatmapHigh.getMap() ? null : map);
+            break;
+        }
+      }
+      function changeGradient(selection) {
+        console.log("Gradient button: " + selection);
+        switch(selection) {
+          case 1:
+            heatmapLow.set("gradient", green);
+            heatmapMedium.set("gradient", yellow);
+            heatmapHigh.set("gradient", red);
+            break;
+          case 2:
+            heatmapLow.set("gradient", green);
+            heatmapMedium.set("gradient", yellowToGreen);
+            heatmapHigh.set("gradient", redToYellowToGreen);
+            break;
+          case 3:
+            heatmapLow.set("gradient", blue);
+            heatmapMedium.set("gradient", yellow);
+            heatmapHigh.set("gradient", red);
+            break;
+        }
+      }
+      function changeOpacity() {
+        console.log("Opacity slider: " + event.target.value / 100);
+        heatmapLow.set("opacity", event.target.value / 100);
+        heatmapMedium.set("opacity", event.target.value / 100);
+        heatmapHigh.set("opacity", event.target.value / 100);
       }
     script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
