@@ -34,3 +34,30 @@ exports.getMap = function () {
     });
   });
 };
+
+/**
+ * Get map data in time range
+ *
+ * returns array
+ **/
+exports.getMapTimeRange = function (from, to) {
+  return new Promise(function (resolve, reject) {
+    pool.getConnection()
+    .then(conn => {
+      conn.query(`SELECT lat, lon, noise FROM DataPoints WHERE dt BETWEEN ${from} AND ${to} UNION ` +
+          `SELECT lat, lon, noise FROM DataPointsShort WHERE dt BETWEEN ${from} AND ${to}`)
+        .then(rows => {
+          console.log(rows); // rows contains rows returned by server
+          conn.release(); // release the connection back to the pool
+          resolve(rows); // send back template with data
+        })
+        .catch(err => {
+          console.log(err);
+          conn.release(); // release the connection back to the pool
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  });
+};

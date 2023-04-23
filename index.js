@@ -51,6 +51,7 @@ app.post('/upload/fulldata', uploadController.postFullData);
 
 // Map routes
 app.get('/map', mapController.getMap);
+app.get('/map/time', mapController.getMapTimeRange);
 
 // Resources routes
 app.get('/resources/scripts/google_maps_script.js', (req, res) => {

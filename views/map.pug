@@ -15,12 +15,23 @@ html
       button#gradient1 Základní
       button#gradient2 Pokročilé
       button#gradient3 Zakládní odlišení červená/zelená
+    .datetime_picker
+      label(for='dt_from') Data od:
+      input#dtfrom(type='datetime-local' name='dt_from' value="2023-03-01T00:00"
+       min="2023-03-01T00:00" max="2023-05-22T23:59")
+      label(for='dt_to') Data do:
+      input#dtto(type='datetime-local' name='dt_to' value="2023-05-22T23:59"
+       min="2023-03-01T00:00" max="2023-05-22T23:59")
+      button#getRangeData Načti data pro daný úsek
     script.
       let map, heatmapLow, heatmapMedium, heatmapHigh;
       var yellow = [
         'rgba(255, 255, 0, 0.0)',
         'rgba(255, 255, 0, 1.0)',
+        'rgba(255, 255, 0, 1.0)',
         'rgba(255, 247, 0, 1.0)',
+        'rgba(255, 247, 0, 1.0)',
+        'rgba(255, 235, 0, 1.0)',
         'rgba(255, 235, 0, 1.0)',
       ];
       var red = [
@@ -32,7 +43,10 @@ html
       var green = [
         'rgba(0, 255, 0, 0.0)',
         'rgba(0, 255, 0, 0.8)',
+        'rgba(0, 255, 0, 0.8)',
         'rgba(0, 242, 0, 0.9)',
+        'rgba(0, 242, 0, 0.9)',
+        'rgba(0, 230, 0, 1.0)',
         'rgba(0, 230, 0, 1.0)',
       ];
       var blue = [
@@ -44,7 +58,7 @@ html
       var yellowToGreen = [
         'rgba(0, 255, 0, 0.0)',
         'rgba(32, 255, 0, 0.8)',
-        'rgba(128, 255, 0, 0.9)',
+        'rgba(128, 255, 0, 1.0)',
         'rgba(230, 255, 0, 1.0)',
         'rgba(255, 240, 0, 1.0)',
       ];
@@ -97,13 +111,13 @@ html
         heatmapLow = new google.maps.visualization.HeatmapLayer({
           data: dataLow,
           map: map,
-          radius: 12
+          radius: 20
         });
 
         heatmapMedium = new google.maps.visualization.HeatmapLayer({
           data: dataMedium,
           map: map,
-          radius: 14
+          radius: 18
         });
 
         heatmapHigh = new google.maps.visualization.HeatmapLayer({
@@ -120,27 +134,22 @@ html
         heatmapMedium.setMap(map);
         heatmapHigh.setMap(map);
 
-        document
-          .getElementById("heatmap1")
+        document.getElementById("heatmap1")
           .addEventListener("click", () => toggleHeatmap(1));
-        document
-          .getElementById("heatmap2")
+        document.getElementById("heatmap2")
           .addEventListener("click", () => toggleHeatmap(2));
-        document
-          .getElementById("heatmap3")
+        document.getElementById("heatmap3")
           .addEventListener("click", () => toggleHeatmap(3));
-        document
-          .getElementById("gradient1")
+        document.getElementById("gradient1")
           .addEventListener("click", () => changeGradient(1));
-        document
-          .getElementById("gradient2")
+        document.getElementById("gradient2")
           .addEventListener("click", () => changeGradient(2));
-        document
-          .getElementById("gradient3")
+        document.getElementById("gradient3")
           .addEventListener("click", () => changeGradient(3));
-        document
-          .getElementById("opacity")
+        document.getElementById("opacity")
           .addEventListener("click", (event) => changeOpacity(event));
+        document.getElementById("getRangeData")
+          .addEventListener("click", () => getRangeData());
       }
       function toggleHeatmap(selection) {
         console.log("Heatmap button: " + selection);
@@ -181,5 +190,9 @@ html
         heatmapLow.set("opacity", event.target.value / 100);
         heatmapMedium.set("opacity", event.target.value / 100);
         heatmapHigh.set("opacity", event.target.value / 100);
+      }
+      function getRangeData() {
+         window.location.href = "http://ulice.nti.tul.cz:5000/map/time?from=" +
+         document.getElementById("dtfrom").value + "&to=" + document.getElementById("dtto").value;
       }
     script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
