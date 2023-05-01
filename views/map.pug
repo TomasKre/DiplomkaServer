@@ -76,13 +76,20 @@ html
         'rgba(255, 0, 0, 1.0)',
       ];
 
+      window.onresize = (event) => {
+        let height = window.innerHeight;
+        let width = window.innerWidth;
+        let mapDiv = document.getElementById('map');
+        mapDiv.style.height = height + "px";
+        mapDiv.style.width = width + "px";
+      };
+
       function initMap() {
         let height = window.innerHeight;
         let width = window.innerWidth;
         let mapDiv = document.getElementById('map');
         console.log(height);
         console.log(width);
-        console.log(mapDiv);
         mapDiv.style.height = height + "px";
         mapDiv.style.width = width + "px";
 
