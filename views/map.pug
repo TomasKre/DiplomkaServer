@@ -26,6 +26,7 @@ html
       label(for='dt_time') Hodina dne:
       input#timepicker(type='time' name='dt_time' value="12:00")
       button#getTimeData Načti data pro hodinu dne
+      button#getMap Načti nefiltrovaná data
     script.
       let map, heatmapLow, heatmapMedium, heatmapHigh;
       var yellow = [
@@ -170,6 +171,8 @@ html
           .addEventListener("click", () => getRangeData());
         document.getElementById("getTimeData")
           .addEventListener("click", () => getTimeData());
+        document.getElementById("getMap")
+          .addEventListener("click", () => getMap());
       }
       function toggleHeatmap(selection) {
         console.log("Heatmap button: " + selection);
@@ -218,5 +221,8 @@ html
       function getTimeData() {
          window.location.href = "http://ulice.nti.tul.cz:5000/map/timeofday?time=" +
          document.getElementById("timepicker").value;
+      }
+      function getMap() {
+         window.location.href = "http://ulice.nti.tul.cz:5000/map";
       }
     script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
