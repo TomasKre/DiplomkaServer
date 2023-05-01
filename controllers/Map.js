@@ -43,3 +43,24 @@ module.exports.getMapTimeRange = function getMap(req, res, next) {
       utils.writeJson(res, response);
     });
 };
+
+module.exports.getMapTimeOfDay = function getMap(req, res, next) {
+  // Ošetření nevalidních vstupů
+  const regex = /^\d{2}:\d{2}$/;
+  const time = req.query.time;
+  if (!regex.test(time)) {
+    utils.writeJson(401, response);
+    return;
+  }
+  const timeParts = time.split(":");
+  const timeUnix = timeParts[0]*3600000 + timeParts[1]*60000;
+  console.log(timeUnix);
+  Map.getMapTimeOfDay(timeUnix, timeUnix + 3600000)
+    .then(function (response) {
+      // render the Pug view with the map data
+      res.render('map', { heatmapData: response });
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};

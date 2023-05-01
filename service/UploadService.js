@@ -34,20 +34,9 @@ exports.postFullData = async function(body) {
         }
       }
 
-      //let sql = "INSERT INTO DataPoints (dt, lat, lon, noise, sidewalk, " +
-      //  "sidewalk_width, green, comfort) VALUES (?);";
-      // let values = [];
-      // for(let i = 0; i < body.data.length; i++) {
-      //   values.push(new Array(body.data[i].dt, body.data[i].lat, body.data[i].lon, body.data[i].noise, 
-      //     body.data[i].sidewalk, body.data[i].sidewalk_width, body.data[i].green, body.data[i].comfort));
-      // }
-      // console.log(values);
-
-      //conn.query(sql, values)
       conn.query(sql)
         .then(rows => {
           console.log("OK");
-          console.log(rows); // [{ "1": 1 }]
           conn.end();
           resolve("200");
         })
@@ -91,7 +80,7 @@ exports.postDataPoints = async function(body) {
       conn.query(sql)
         .then(rows => {
           console.log("OK");
-          console.log(rows); // [{ "1": 1 }]
+          console.log(rows);
           conn.end();
           resolve("200");
         })

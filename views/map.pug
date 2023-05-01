@@ -23,6 +23,10 @@ html
       input#dtto(type='datetime-local' name='dt_to' value="2023-05-22T23:59"
        min="2023-03-01T00:00" max="2023-05-22T23:59")
       button#getRangeData Načti data pro daný úsek
+      label(for='dt_time') Hodina dne:
+      input#timepicker(type='time' name='dt_time' value="12:00"
+       min="00:00" max="23:00")
+      button#getTimeData Načti data pro hodinu dne
     script.
       let map, heatmapLow, heatmapMedium, heatmapHigh;
       var yellow = [
@@ -150,6 +154,8 @@ html
           .addEventListener("click", (event) => changeOpacity(event));
         document.getElementById("getRangeData")
           .addEventListener("click", () => getRangeData());
+        document.getElementById("getTimeData")
+          .addEventListener("click", () => getTimeData());
       }
       function toggleHeatmap(selection) {
         console.log("Heatmap button: " + selection);
@@ -192,7 +198,11 @@ html
         heatmapHigh.set("opacity", event.target.value / 100);
       }
       function getRangeData() {
-         window.location.href = "http://ulice.nti.tul.cz:5000/map/time?from=" +
+         window.location.href = "http://ulice.nti.tul.cz:5000/map/datetime?from=" +
          document.getElementById("dtfrom").value + "&to=" + document.getElementById("dtto").value;
+      }
+      function getTimeData() {
+         window.location.href = "http://ulice.nti.tul.cz:5000/map/timeofday?time=" +
+         document.getElementById("timepicker").value;
       }
     script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
