@@ -73,7 +73,7 @@ exports.getMapTimeOfDay = function (unixTime, unixTimePlusOne) {
     .then(conn => {
       conn.query(`SELECT lat, lon, noise FROM DataPoints WHERE (dt % 86400000) BETWEEN ` +
           `${unixTime} AND ${unixTimePlusOne} UNION SELECT lat, lon, noise FROM DataPointsShort ` +
-          `WHERE dt BETWEEN ${unixTime} AND ${unixTimePlusOne}`)
+          `WHERE (dt % 86400000) BETWEEN ${unixTime} AND ${unixTimePlusOne}`)
         .then(rows => {
           //console.log(rows); // rows contains rows returned by server
           conn.release(); // release the connection back to the pool

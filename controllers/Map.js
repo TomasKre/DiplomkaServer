@@ -55,6 +55,9 @@ module.exports.getMapTimeOfDay = function getMap(req, res, next) {
   const timeParts = time.split(":");
   const timeUnix = timeParts[0]*3600000 + timeParts[1]*60000;
   console.log(timeUnix);
+  timeUnixPlusOne = timeUnix + 3600000;
+  if (timeUnixPlusOne >= 86400000)
+    timeUnixPlusOne = timeUnixPlusOne - 86400000;
   Map.getMapTimeOfDay(timeUnix, timeUnix + 3600000)
     .then(function (response) {
       // render the Pug view with the map data
