@@ -17,3 +17,9 @@ body {
     padding: 8px;
     background-color: white;
 }
+.datetime_picker input, .datetime_picker button {
+    margin-right: 8px;
+}
+.buttons input, .buttons button {
+    margin-right: 8px;
+}

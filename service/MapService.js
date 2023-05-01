@@ -20,7 +20,7 @@ exports.getMap = function () {
       conn.query('SELECT lat, lon, noise FROM DataPoints UNION ' +
       'SELECT lat, lon, noise FROM DataPointsShort')
         .then(rows => {
-          console.log(rows); // rows contains rows returned by server
+          //console.log(rows); // rows contains rows returned by server
           conn.release(); // release the connection back to the pool
           resolve(rows); // send back template with data
         })
@@ -47,7 +47,7 @@ exports.getMapTimeRange = function (from, to) {
       conn.query(`SELECT lat, lon, noise FROM DataPoints WHERE dt BETWEEN ${from} AND ${to} UNION ` +
           `SELECT lat, lon, noise FROM DataPointsShort WHERE dt BETWEEN ${from} AND ${to}`)
         .then(rows => {
-          console.log(rows); // rows contains rows returned by server
+          //console.log(rows); // rows contains rows returned by server
           conn.release(); // release the connection back to the pool
           resolve(rows); // send back template with data
         })
@@ -75,7 +75,7 @@ exports.getMapTimeOfDay = function (unixTime, unixTimePlusOne) {
           `${unixTime} AND ${unixTimePlusOne} UNION SELECT lat, lon, noise FROM DataPointsShort ` +
           `WHERE dt BETWEEN ${unixTime} AND ${unixTimePlusOne}`)
         .then(rows => {
-          console.log(rows); // rows contains rows returned by server
+          //console.log(rows); // rows contains rows returned by server
           conn.release(); // release the connection back to the pool
           resolve(rows); // send back template with data
         })

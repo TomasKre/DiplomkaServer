@@ -10,8 +10,8 @@ html
       button#heatmap1 Nízké hladiny
       button#heatmap2 Střední hladiny
       button#heatmap3 Vysoké hladiny
+      label(for='opacity_input') Průhlednost:
       input#opacity(type='range' value='60' step='10' name='opacity_input')
-      label(for='opacity_input') Průhlednost
       button#gradient1 Základní
       button#gradient2 Pokročilé
       button#gradient3 Zakládní odlišení červená/zelená
@@ -24,47 +24,54 @@ html
        min="2023-03-01T00:00" max="2023-05-22T23:59")
       button#getRangeData Načti data pro daný úsek
       label(for='dt_time') Hodina dne:
-      input#timepicker(type='time' name='dt_time' value="12:00"
-       min="00:00" max="23:00")
+      input#timepicker(type='time' name='dt_time' value="12:00")
       button#getTimeData Načti data pro hodinu dne
     script.
       let map, heatmapLow, heatmapMedium, heatmapHigh;
       var yellow = [
         'rgba(255, 255, 0, 0.0)',
+        'rgba(255, 255, 0, 0.5)',
+        'rgba(255, 255, 0, 0.6)',
+        'rgba(255, 255, 0, 0.7)',
+        'rgba(255, 255, 0, 0.8)',
+        'rgba(255, 255, 0, 0.9)',
         'rgba(255, 255, 0, 1.0)',
-        'rgba(255, 255, 0, 1.0)',
-        'rgba(255, 247, 0, 1.0)',
-        'rgba(255, 247, 0, 1.0)',
-        'rgba(255, 235, 0, 1.0)',
-        'rgba(255, 235, 0, 1.0)',
       ];
       var red = [
         'rgba(255, 0, 0, 0.0)',
+        'rgba(255, 0, 0, 0.5)',
+        'rgba(255, 0, 0, 0.6)',
+        'rgba(255, 0, 0, 0.7)',
         'rgba(255, 0, 0, 0.8)',
-        'rgba(242, 0, 0, 0.9)',
-        'rgba(230, 0, 0, 1.0)',
+        'rgba(255, 0, 0, 0.9)',
+        'rgba(255, 0, 0, 1.0)',
       ];
       var green = [
         'rgba(0, 255, 0, 0.0)',
+        'rgba(0, 255, 0, 0.5)',
+        'rgba(0, 255, 0, 0.6)',
+        'rgba(0, 255, 0, 0.7)',
         'rgba(0, 255, 0, 0.8)',
-        'rgba(0, 255, 0, 0.8)',
-        'rgba(0, 242, 0, 0.9)',
-        'rgba(0, 242, 0, 0.9)',
-        'rgba(0, 230, 0, 1.0)',
-        'rgba(0, 230, 0, 1.0)',
+        'rgba(0, 255, 0, 0.9)',
+        'rgba(0, 255, 0, 1.0)',
       ];
       var blue = [
         'rgba(0, 0, 255, 0.0)',
+        'rgba(0, 0, 255, 0.5)',
+        'rgba(0, 0, 255, 0.6)',
+        'rgba(0, 0, 255, 0.7)',
         'rgba(0, 0, 255, 0.8)',
-        'rgba(0, 0, 242, 0.9)',
-        'rgba(0, 0, 230, 1.0)',
+        'rgba(0, 0, 255, 0.9)',
+        'rgba(0, 0, 255, 1.0)',
       ];
       var yellowToGreen = [
         'rgba(0, 255, 0, 0.0)',
-        'rgba(32, 255, 0, 0.8)',
-        'rgba(128, 255, 0, 1.0)',
-        'rgba(230, 255, 0, 1.0)',
-        'rgba(255, 240, 0, 1.0)',
+        'rgba(0, 255, 0, 0.5)',
+        'rgba(80, 255, 0, 0.6)',
+        'rgba(180, 255, 0, 0.7)',
+        'rgba(255, 255, 0, 0.8)',
+        'rgba(255, 255, 0, 0.9)',
+        'rgba(255, 255, 0, 1.0)',
       ];
       var redToYellowToGreen = [
         'rgba(0, 255, 0, 0.0)',
@@ -122,7 +129,7 @@ html
         heatmapLow = new google.maps.visualization.HeatmapLayer({
           data: dataLow,
           map: map,
-          radius: 20
+          radius: 18
         });
 
         heatmapMedium = new google.maps.visualization.HeatmapLayer({
@@ -134,7 +141,7 @@ html
         heatmapHigh = new google.maps.visualization.HeatmapLayer({
           data: dataHigh,
           map: map,
-          radius: 16
+          radius: 18
         });
 
         heatmapLow.set('gradient', green);
