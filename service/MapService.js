@@ -27,10 +27,12 @@ exports.getMap = function () {
         .catch(err => {
           console.log(err);
           conn.release(); // release the connection back to the pool
+          reject("401");
         });
     })
     .catch(err => {
       console.log(err);
+      reject("500");
     });
   });
 };
@@ -54,10 +56,12 @@ exports.getMapTimeRange = function (from, to) {
         .catch(err => {
           console.log(err);
           conn.release(); // release the connection back to the pool
+          reject("401");
         });
     })
     .catch(err => {
       console.log(err);
+      reject("500");
     });
   });
 };
@@ -90,10 +94,12 @@ exports.getMapTimeOfDay = function (unixTime, unixTimePlusOne) {
         .catch(err => {
           console.log(err);
           conn.release(); // release the connection back to the pool
+          reject("401");
         });
     })
     .catch(err => {
       console.log(err);
+      reject("500");
     });
   });
 };
