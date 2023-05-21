@@ -1,0 +1,155 @@
+doctype html
+html
+  head
+    title Dopravní průzkum ulic – Přihlášení / Registrace
+    style
+      include ../resources/stylesheets/main.css
+      include ../resources/stylesheets/user.css
+  body
+    #result
+    #wrapper
+      #login
+        h1 Přihlášení
+        form#signin
+          label(for = "username") Jméno:
+          input(type = "text", name = "username", id = "username")
+          br
+          label(for = "password") Heslo:
+          input(type = "password", name = "password", id = "password")
+          br
+        button#loginButton Přihlásit
+      #register
+        h1 Registrace
+        form#signup
+          label(for = "usernameR") Přezdívka:
+          input(type = "text", name = "username", id = "usernameR")
+          br
+          label(for = "passwordR") Heslo:
+          input(type = "password", name = "password", id = "passwordR")
+          br
+          label(for = "passwordR2") Heslo znovu:
+          input(type = "password", name = "password2", id = "passwordR2")
+          br
+          label(for = "firstname") Jméno:
+          input(type = "text", name = "firstname", id = "firstname")
+          br
+          label(for = "lastname") Příjmení:
+          input(type = "text", name = "lastname", id = "lastname")
+          br
+          label(for = "email") Email:
+          input(type = "email", name = "email", id = "email")
+          br
+        button#registerButton Registrovat
+    button#logoutButton Odhlásit
+    script.
+      window.onload = function setup () {
+        let responseObject = !{JSON.stringify(responseObject)};
+        document.getElementById("loginButton")
+        .addEventListener("click", () => login());
+        document.getElementById("registerButton")
+        .addEventListener("click", () => register());
+        document.getElementById("logoutButton")
+        .addEventListener("click", () => logout());
+        let resultDiv = document.getElementById("result");
+
+        function login() {
+          let signin = document.getElementById("signin");
+
+          let match = document.cookie.match(new RegExp('(^| )token=([^;]+)'));
+          if (match != null) {
+            resultDiv.innerHTML = "Nelze se přihlásit, pokud jste přihlášen";
+            return;
+          } else if (signin.elements["username"].value == "" || signin.elements["password"].value == "") {
+            resultDiv.innerHTML = "Pole nesmí být prázdná";
+            return; 
+          } else {
+            resultDiv.innerHTML = "";
+          };
+
+          fetch("http://ulice.nti.tul.cz:5000/user/login", {
+            method: "POST",
+            body: JSON.stringify({
+              username: username.value,
+              password: password.value,
+            }),
+            headers: {
+              "Content-type": "application/json"
+            }
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            if (data.token !== undefined) {
+              resultDiv.innerHTML = "";
+              let d = new Date();
+              d.setTime(d.getTime() + 24 * 60 * 60 * 1000); // 1 day from now
+              document.cookie = "token=" + data.token + "; expires=" + d.toUTCString();
+              window.location.href = "http://ulice.nti.tul.cz:5000/map";
+            } else {
+              resultDiv.innerHTML = data.message;
+            }
+          });
+        };
+
+        function register() {
+          let signup = document.getElementById("signup");
+
+          let match = document.cookie.match(new RegExp('(^| )token=([^;]+)'));
+          if (match != null) {
+            resultDiv.innerHTML = "Nelze se zaregistrovat, pokud jste přihlášen";
+            return;
+          } else if (signup.elements["username"].value == "" || signup.elements["password"].value == "" ||
+              signup.elements["password2"].value == "" || signup.elements["firstname"].value == "" ||
+              signup.elements["lastname"].value == "" || signup.elements["email"] == "") {
+            resultDiv.innerHTML = "Pole nesmí být prázdná"; 
+            return;   
+          } else {
+            if (signup.elements["password"].value != signup.elements["password2"].value) {
+              resultDiv.innerHTML = "Hesla se neshodují";
+              return;
+            } else {
+              resultDiv.innerHTML = "";
+            }
+          };
+
+          fetch("http://ulice.nti.tul.cz:5000/user/register", {
+            method: "POST",
+            body: JSON.stringify({
+              username: signup.elements["username"].value,
+              password: signup.elements["password"].value,
+              password2: signup.elements["password2"].value,
+              firstName: signup.elements["firstname"].value,
+              lastName: signup.elements["lastname"].value,
+              email: signup.elements["email"].value
+            }),
+            headers: {
+              "Content-type": "application/json"
+            }
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            if (data.token !== undefined) {
+              resultDiv.innerHTML = "";
+              let d = new Date();
+              d.setTime(d.getTime() + 24 * 60 * 60 * 1000); // 1 day from now
+              document.cookie = "token=" + data.token + "; expires=" + d.toUTCString();
+              window.location.href = "http://ulice.nti.tul.cz:5000/map";
+            } else {
+              resultDiv.innerHTML = data.message;
+            }
+          });
+        };
+
+        function logout() {
+            fetch("http://ulice.nti.tul.cz:5000/user/logout", {
+            method: "GET"
+          })
+          .then(function(response) {
+            document.cookie = "token=; expires=-1";
+            resultDiv.innerHTML = "Odhlášeno";
+          });
+        };
+      }

@@ -3,6 +3,8 @@ const express = require('express');
 const fs = require('fs');
 const https = require('https');
 const app = express();
+const cookieSession = require("cookie-session");
+const authJWT = require("./middleware/authJWT.js");
 
 function downloadFile(url, filename) {
   try {
@@ -31,19 +33,26 @@ const mapController = require('./controllers/Map');
 
 app.use(express.json());
 
+app.use(
+  cookieSession({
+    name: "session",
+    secret: "fdg561*5-d5E1fLOk", //secret
+    httpOnly: true
+  })
+);
+
 app.set('views', './views');
 app.set('view engine', 'pug');
 
 app.get('/', function(req, res) {
   res.redirect('/map');
-  //res.redirect('/user'); po přihlašování
 });
 
 // User routes
-app.get('/user/login', userController.loginUser);
+app.get('/user', userController.loginOrRegisterUser);
+app.post('/user/login', userController.loginUser);
 app.get('/user/logout', userController.logoutUser);
-app.get('/user/:name', userController.getUserByName);
-app.post('/user', userController.createUser);
+app.post('/user/register', userController.createUser);
 
 // Upload routes
 app.post('/upload/points', uploadController.postDataPoints);
@@ -51,8 +60,8 @@ app.post('/upload/fulldata', uploadController.postFullData);
 
 // Map routes
 app.get('/map', mapController.getMap);
-app.get('/map/datetime', mapController.getMapTimeRange);
-app.get('/map/timeofday', mapController.getMapTimeOfDay);
+app.get('/map/datetime', [authJWT.verifyToken], mapController.getMapTimeRange);
+app.get('/map/timeofday', [authJWT.verifyToken], mapController.getMapTimeOfDay);
 
 // Resources routes
 app.get('/resources/scripts/google_maps_script.js', (req, res) => {

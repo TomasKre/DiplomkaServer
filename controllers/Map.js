@@ -31,9 +31,7 @@ module.exports.getMapTimeRange = function getMap(req, res, next) {
   const dateFrom = new Date(from);
   const dateTo = new Date(to);
   const unixFrom = dateFrom.getTime();
-  console.log(unixFrom);
   const unixTo = dateTo.getTime();
-  console.log(unixTo);
   Map.getMapTimeRange(unixFrom, unixTo)
     .then(function (response) {
       // render the Pug view with the map data
@@ -54,7 +52,6 @@ module.exports.getMapTimeOfDay = function getMap(req, res, next) {
   }
   const timeParts = time.split(":");
   const timeUnix = timeParts[0]*3600000 + timeParts[1]*60000;
-  console.log(timeUnix);
   var timeUnixPlusOne = timeUnix + 3600000;
   if (timeUnixPlusOne >= 86400000)
     timeUnixPlusOne = timeUnixPlusOne - 86400000;
