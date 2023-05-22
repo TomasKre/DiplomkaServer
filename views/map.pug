@@ -28,7 +28,7 @@ html
       input#dt_time(type='time' name='dt_time' value="12:00")
       button#getTimeData Načti data pro hodinu dne
       button#getMap Načti nefiltrovaná data
-      button#logoutButton Odhlásit
+      button#userButton Uživatelská sekce
     script.
       let map, heatmapLow, heatmapMedium, heatmapHigh;
       var yellow = [
@@ -171,6 +171,8 @@ html
           .addEventListener("click", () => getTimeData());
         document.getElementById("getMap")
           .addEventListener("click", () => getMap());
+        document.getElementById("userButton")
+          .addEventListener("click", () => goToUser());
       }
       function toggleHeatmap(selection) {
         console.log("Heatmap button: " + selection);
@@ -213,22 +215,17 @@ html
         heatmapHigh.set("opacity", event.target.value / 100);
       }
       function getRangeData() {
-         window.location.href = "http://ulice.nti.tul.cz:5000/map/datetime?from=" +
-         document.getElementById("dt_from").value + "&to=" + document.getElementById("dt_to").value;
+        window.location.href = "http://ulice.nti.tul.cz:5000/map/datetime?from=" +
+        document.getElementById("dt_from").value + "&to=" + document.getElementById("dt_to").value;
       }
       function getTimeData() {
-         window.location.href = "http://ulice.nti.tul.cz:5000/map/timeofday?time=" +
-         document.getElementById("dt_time").value;
+        window.location.href = "http://ulice.nti.tul.cz:5000/map/timeofday?time=" +
+        document.getElementById("dt_time").value;
       }
       function getMap() {
-         window.location.href = "http://ulice.nti.tul.cz:5000/map";
+        window.location.href = "http://ulice.nti.tul.cz:5000/map";
       }
-      function logout() {
-          fetch("http://ulice.nti.tul.cz:5000/user/logout", {
-            method: "GET"
-          })
-          .then(function(response) {
-            document.cookie = "token=; expires=-1";
-          });
-        };
+      function goToUser() {
+        window.location.href = "http://ulice.nti.tul.cz:5000/user";
+      };
     script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
