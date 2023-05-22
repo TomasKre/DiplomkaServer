@@ -28,6 +28,7 @@ html
       input#timepicker(type='time' name='dt_time' value="12:00")
       button#getTimeData Načti data pro hodinu dne
       button#getMap Načti nefiltrovaná data
+      button#logoutButton Odhlásit
     script.
       let map, heatmapLow, heatmapMedium, heatmapHigh;
       var yellow = [
@@ -226,4 +227,12 @@ html
       function getMap() {
          window.location.href = "http://ulice.nti.tul.cz:5000/map";
       }
+      function logout() {
+            fetch("http://ulice.nti.tul.cz:5000/user/logout", {
+            method: "GET"
+          })
+          .then(function(response) {
+            document.cookie = "token=; expires=-1";
+          });
+        };
     script(src='../resources/scripts/google_maps_script.js' onload="initMap()")
