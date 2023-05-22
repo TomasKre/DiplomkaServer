@@ -4,7 +4,7 @@
 }
 #result {
     display: flex;
-    height: 10vh;
+    height: calc(10vh - 2px);
     width: 100vw;
     border-bottom: 1px solid gray;
     align-items: center;
@@ -34,6 +34,14 @@
     position: absolute;
     right: 5px;
     top: 5px;
+}
+#signup, #signin{
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 8px;
+}
+label {
+    text-align:right;
 }
 h1 {
     margin: 20px;
