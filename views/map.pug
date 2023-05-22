@@ -12,20 +12,20 @@ html
       button#heatmap2 Střední hladiny
       button#heatmap3 Vysoké hladiny
       label(for='opacity_input') Průhlednost:
-      input#opacity(type='range' value='60' step='10' name='opacity_input' id='opacity_input')
+      input#opacity_input(type='range' value='60' step='10' name='opacity_input')
       button#gradient1 Základní
       button#gradient2 Pokročilé
       button#gradient3 Zakládní odlišení červená/zelená
     .datetime_picker
       label(for='dt_from') Data od:
-      input#dtfrom(type='datetime-local' name='dt_from' value="2023-03-01T00:00"
-       min="2023-03-01T00:00" max="2023-05-22T23:59" id='dt_from')
+      input#dt_from(type='datetime-local' name='dt_from' value="2023-03-01T00:00"
+       min="2023-03-01T00:00" max="2023-05-22T23:59")
       label(for='dt_to') Data do:
-      input#dtto(type='datetime-local' name='dt_to' value="2023-05-22T23:59"
-       min="2023-03-01T00:00" max="2023-05-22T23:59" id='dt_to')
+      input#dt_to(type='datetime-local' name='dt_to' value="2023-05-22T23:59"
+       min="2023-03-01T00:00" max="2023-05-22T23:59")
       button#getRangeData Načti data pro daný úsek
       label(for='dt_time') Hodina dne:
-      input#timepicker(type='time' name='dt_time' value="12:00" id='dt_time')
+      input#dt_time(type='time' name='dt_time' value="12:00")
       button#getTimeData Načti data pro hodinu dne
       button#getMap Načti nefiltrovaná data
       button#logoutButton Odhlásit
@@ -98,13 +98,9 @@ html
         let height = window.innerHeight;
         let width = window.innerWidth;
         let mapDiv = document.getElementById('map');
-        console.log(height);
-        console.log(width);
         mapDiv.style.height = height + "px";
         mapDiv.style.width = width + "px";
 
-        console.log(google);
-        console.log(google.maps);
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
           scaleControl: true,
@@ -167,7 +163,7 @@ html
           .addEventListener("click", () => changeGradient(2));
         document.getElementById("gradient3")
           .addEventListener("click", () => changeGradient(3));
-        document.getElementById("opacity")
+        document.getElementById("opacity_input")
           .addEventListener("click", (event) => changeOpacity(event));
         document.getElementById("getRangeData")
           .addEventListener("click", () => getRangeData());
@@ -218,17 +214,17 @@ html
       }
       function getRangeData() {
          window.location.href = "http://ulice.nti.tul.cz:5000/map/datetime?from=" +
-         document.getElementById("dtfrom").value + "&to=" + document.getElementById("dtto").value;
+         document.getElementById("dt_from").value + "&to=" + document.getElementById("dt_to").value;
       }
       function getTimeData() {
          window.location.href = "http://ulice.nti.tul.cz:5000/map/timeofday?time=" +
-         document.getElementById("timepicker").value;
+         document.getElementById("dt_time").value;
       }
       function getMap() {
          window.location.href = "http://ulice.nti.tul.cz:5000/map";
       }
       function logout() {
-            fetch("http://ulice.nti.tul.cz:5000/user/logout", {
+          fetch("http://ulice.nti.tul.cz:5000/user/logout", {
             method: "GET"
           })
           .then(function(response) {
