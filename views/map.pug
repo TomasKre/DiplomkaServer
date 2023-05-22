@@ -12,20 +12,20 @@ html
       button#heatmap2 Střední hladiny
       button#heatmap3 Vysoké hladiny
       label(for='opacity_input') Průhlednost:
-      input#opacity(type='range' value='60' step='10' name='opacity_input')
+      input#opacity(type='range' value='60' step='10' name='opacity_input' id='opacity_input')
       button#gradient1 Základní
       button#gradient2 Pokročilé
       button#gradient3 Zakládní odlišení červená/zelená
     .datetime_picker
       label(for='dt_from') Data od:
       input#dtfrom(type='datetime-local' name='dt_from' value="2023-03-01T00:00"
-       min="2023-03-01T00:00" max="2023-05-22T23:59")
+       min="2023-03-01T00:00" max="2023-05-22T23:59" id='dt_from')
       label(for='dt_to') Data do:
       input#dtto(type='datetime-local' name='dt_to' value="2023-05-22T23:59"
-       min="2023-03-01T00:00" max="2023-05-22T23:59")
+       min="2023-03-01T00:00" max="2023-05-22T23:59" id='dt_to')
       button#getRangeData Načti data pro daný úsek
       label(for='dt_time') Hodina dne:
-      input#timepicker(type='time' name='dt_time' value="12:00")
+      input#timepicker(type='time' name='dt_time' value="12:00" id='dt_time')
       button#getTimeData Načti data pro hodinu dne
       button#getMap Načti nefiltrovaná data
       button#logoutButton Odhlásit
