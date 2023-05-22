@@ -5,11 +5,23 @@ var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
 
 exports.createUser = function createUser (req, res, next) {
+  const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  if(!emailRegexp.test(req.body.email)) {
+    var responseObject = {code: "401", message: "Chybný formát emailu"}
+    utils.writeJson(res, responseObject);
+    return;
+  }
   if (req.body.password != req.body.password2) {
     var responseObject = {code: "401", message: "Hesla se neshodují"}
     utils.writeJson(res, responseObject);
+    return;
   }
-  User.createUser(req.body.username, req.body.password, req.body.email, req.body.firstName, req.body.lastName)
+  let username = escape(req.body.username);
+  let password = escape(req.body.password);
+  let email = escape(req.body.email);
+  let firstName = escape(req.body.firstName);
+  let lastName = escape(req.body.lastName);
+  User.createUser(username, password, email, firstName, lastName)
     .then(function (response) {
       if (response == "201") {
         const token = jwt.sign({ username: req.body.username }, "fdg561*5-d5E1fLOk", { // secret
@@ -29,7 +41,9 @@ exports.createUser = function createUser (req, res, next) {
 };
 
 exports.loginUser = function loginUser (req, res, next) {
-  User.loginUser(req.body.username, req.body.password)
+  let username = escape(req.body.username);
+  let password = escape(req.body.password);
+  User.loginUser(username, password)
     .then(function (response) {
       if (response == "200") {
         const token = jwt.sign({ username: req.body.username }, "fdg561*5-d5E1fLOk", { // secret
